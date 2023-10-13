@@ -17,15 +17,34 @@ function App() {
     const form = event.target;
     const name = form.name.value;
     const email = form.email.value;
-    // form.reset();
     const user = { name, email };
     console.log(user);
+
+    // post api
+    fetch('http://localhost:5000/users', {
+      method: 'POST', // default value is GET but to send data to server must use POST method
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(user) // must use JSON.stringify()
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+
+        const newUsers = [...users, data]
+
+        setUsers(newUsers)
+
+
+        form.reset();
+      })
   }
 
   return (
     <>
       <h1>Users Management System</h1>
-      <p>Numbers of Users: {users.length}</p>
+      <p>Number of Users: {users.length}</p>
       <form onSubmit={handleAddUser}>
         <input type="text" name="name" id="" />
         <br />
